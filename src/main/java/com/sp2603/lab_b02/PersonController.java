@@ -7,10 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/people")
 public class PersonController {
 
     private final PersonService personService;
@@ -53,5 +54,16 @@ public class PersonController {
             }
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/filter")
+    public List<PersonData> filterByLastName(@RequestParam String lastName) {
+        List<PersonData> personList = new ArrayList<>();
+        for(PersonData person: personService.getAllPersons()) {
+            if(person.getLastName().equals(lastName)) {
+                personList.add(person);
+            }
+        }
+        return personList;
     }
 }
