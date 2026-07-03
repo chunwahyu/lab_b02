@@ -1,0 +1,45 @@
+package com.sp2603.lab_b02.mapper.person;
+
+import com.sp2603.lab_b02.data.person.domainObject.response.CreatePersonResponseData;
+import com.sp2603.lab_b02.data.person.domainObject.response.GetAllPeopleResponseData;
+import com.sp2603.lab_b02.data.person.dto.response.CreatePersonResponseDto;
+import com.sp2603.lab_b02.data.person.dto.response.GetAllPeopleResponseDto;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class PersonDtoMapper {
+
+    public CreatePersonResponseDto createPersonResponseDto(CreatePersonResponseData createPersonResponseData) {
+
+        CreatePersonResponseDto createPersonResponseDto = new CreatePersonResponseDto();
+        createPersonResponseDto.setFirstName(createPersonResponseData.getFirstName());
+        createPersonResponseDto.setLastName(createPersonResponseData.getLastName());
+        createPersonResponseDto.setHkid(createPersonResponseData.getHkid());
+
+        return createPersonResponseDto;
+    }
+
+    public GetAllPeopleResponseDto toGetAllPeopleResponseDto(GetAllPeopleResponseData getAllPeopleResponseData) {
+
+        GetAllPeopleResponseDto getAllPeopleResponseDto = new GetAllPeopleResponseDto();
+        getAllPeopleResponseDto.setFirstName(getAllPeopleResponseData.getFirstName());
+        getAllPeopleResponseDto.setLastName(getAllPeopleResponseData.getLastName());
+        getAllPeopleResponseDto.setHkid(getAllPeopleResponseData.getHkid());
+
+        return getAllPeopleResponseDto;
+    }
+
+    public List<GetAllPeopleResponseDto> toGetAllPeopleResponseDtoList(List<GetAllPeopleResponseData> getAllPeopleResponseDataList) {
+        List<GetAllPeopleResponseDto> getAllPeopleResponseDtoList = new ArrayList<>();
+
+        for(GetAllPeopleResponseData getAllPeopleResponseData: getAllPeopleResponseDataList) {
+            GetAllPeopleResponseDto getAllPeopleResponseDto = toGetAllPeopleResponseDto(getAllPeopleResponseData);
+            getAllPeopleResponseDtoList.add(getAllPeopleResponseDto);
+        }
+
+        return getAllPeopleResponseDtoList;
+    }
+}
