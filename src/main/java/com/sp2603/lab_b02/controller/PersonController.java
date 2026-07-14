@@ -1,21 +1,20 @@
 package com.sp2603.lab_b02.controller;
 
+import com.sp2603.lab_b02.data.person.domainObject.request.UpdatePersonRequestData;
 import com.sp2603.lab_b02.data.person.domainObject.response.CreatePersonResponseData;
 import com.sp2603.lab_b02.data.person.domainObject.response.GetAllPeopleResponseData;
+import com.sp2603.lab_b02.data.person.domainObject.response.PersonResponseData;
+import com.sp2603.lab_b02.data.person.dto.request.UpdatePersonRequestDto;
 import com.sp2603.lab_b02.data.person.dto.response.CreatePersonResponseDto;
 import com.sp2603.lab_b02.data.person.dto.response.GetAllPeopleResponseDto;
-import com.sp2603.lab_b02.data.person.entity.PersonEntity;
+import com.sp2603.lab_b02.data.person.dto.response.PersonResponseDto;
 import com.sp2603.lab_b02.data.person.domainObject.request.CreatePersonRequestData;
 import com.sp2603.lab_b02.data.person.dto.request.CreatePersonRequestDto;
 import com.sp2603.lab_b02.mapper.person.PersonDataMapper;
 import com.sp2603.lab_b02.mapper.person.PersonDtoMapper;
 import com.sp2603.lab_b02.service.PersonService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -63,39 +62,16 @@ public class PersonController {
         return getAllPeopleResponseDtoList;
     }
 
-    /**
-    @PutMapping("/update")
-    public PersonEntity updatePerson(@RequestBody PersonEntity updatePerson) {
-        for(PersonEntity person: personService.getAllPersons()) {
-            if(person.getHkid().equals(updatePerson.getHkid())) {
-                person.setFirstName(updatePerson.getFirstName());
-                person.setLastName(updatePerson.getLastName());
-                return person;
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+    @PutMapping("/people")
+    public PersonResponseDto updatePerson(@RequestBody UpdatePersonRequestDto updatePersonRequestDto) {
+        UpdatePersonRequestData updatePersonRequestData = personDataMapper.toUpdatePersonRequestData(updatePersonRequestDto);
+
+        PersonResponseData personResponseData = personService.updatePerson(updatePersonRequestData);
+
+        PersonResponseDto personResponseDto = personDtoMapper.toPersonResponseDto(personResponseData);
+
+        return personResponseDto;
     }
 
-    @DeleteMapping("/delete")
-    public PersonEntity deletePerson(@RequestParam String hkid) {
-        for(PersonEntity person: personService.getAllPersons()) {
-            if(person.getHkid().equals(hkid)) {
-                personService.getAllPersons().remove(person);
-                return person;
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
-
-    @GetMapping("/filter")
-    public List<PersonEntity> filterByLastName(@RequestParam String lastName) {
-        List<PersonEntity> personList = new ArrayList<>();
-        for(PersonEntity person: personService.getAllPersons()) {
-            if(person.getLastName().equals(lastName)) {
-                personList.add(person);
-            }
-        }
-        return personList;
-    }
-    **/
 }

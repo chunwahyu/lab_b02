@@ -1,6 +1,7 @@
 package com.sp2603.lab_b02.mapper.person;
 
 import com.sp2603.lab_b02.data.person.domainObject.request.CreatePersonRequestData;
+import com.sp2603.lab_b02.data.person.domainObject.request.UpdatePersonRequestData;
 import com.sp2603.lab_b02.data.person.entity.PersonEntity;
 import org.springframework.stereotype.Component;
 
@@ -16,4 +17,15 @@ public class PersonEntityMapper {
 
         return personEntity;
     }
+
+    public PersonEntity toUpdatePersonEntity(UpdatePersonRequestData updatePersonRequestData) {
+
+        PersonEntity personEntity = new PersonEntity();
+        personEntity.setFirstName(updatePersonRequestData.getFirstName());
+        personEntity.setLastName(updatePersonRequestData.getLastName());
+        personEntity.setHkid(updatePersonRequestData.getHkid());
+
+        return personEntity;
+    }
+
 }

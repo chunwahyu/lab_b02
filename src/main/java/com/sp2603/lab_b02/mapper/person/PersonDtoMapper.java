@@ -2,8 +2,10 @@ package com.sp2603.lab_b02.mapper.person;
 
 import com.sp2603.lab_b02.data.person.domainObject.response.CreatePersonResponseData;
 import com.sp2603.lab_b02.data.person.domainObject.response.GetAllPeopleResponseData;
+import com.sp2603.lab_b02.data.person.domainObject.response.PersonResponseData;
 import com.sp2603.lab_b02.data.person.dto.response.CreatePersonResponseDto;
 import com.sp2603.lab_b02.data.person.dto.response.GetAllPeopleResponseDto;
+import com.sp2603.lab_b02.data.person.dto.response.PersonResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -42,4 +44,15 @@ public class PersonDtoMapper {
 
         return getAllPeopleResponseDtoList;
     }
+
+
+    public PersonResponseDto toPersonResponseDto(PersonResponseData personResponseData) {
+        PersonResponseDto personResponseDto = new PersonResponseDto();
+        personResponseDto.setFirstName(personResponseData.getFirstName());
+        personResponseDto.setLastName(personResponseData.getLastName());
+        personResponseDto.setHkid(personResponseData.getHkid());
+
+        return personResponseDto;
+    }
+
 }

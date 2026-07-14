@@ -1,9 +1,12 @@
 package com.sp2603.lab_b02.mapper.person;
 
 import com.sp2603.lab_b02.data.person.domainObject.request.CreatePersonRequestData;
+import com.sp2603.lab_b02.data.person.domainObject.request.UpdatePersonRequestData;
 import com.sp2603.lab_b02.data.person.domainObject.response.CreatePersonResponseData;
 import com.sp2603.lab_b02.data.person.domainObject.response.GetAllPeopleResponseData;
+import com.sp2603.lab_b02.data.person.domainObject.response.PersonResponseData;
 import com.sp2603.lab_b02.data.person.dto.request.CreatePersonRequestDto;
+import com.sp2603.lab_b02.data.person.dto.request.UpdatePersonRequestDto;
 import com.sp2603.lab_b02.data.person.entity.PersonEntity;
 import org.springframework.stereotype.Component;
 
@@ -50,4 +53,23 @@ public class PersonDataMapper {
 
         return getAllPeopleResponseDataList;
     }
+
+    public UpdatePersonRequestData toUpdatePersonRequestData(UpdatePersonRequestDto updatePersonRequestDto) {
+        UpdatePersonRequestData updatePersonRequestData = new UpdatePersonRequestData();
+        updatePersonRequestData.setFirstName(updatePersonRequestDto.getFirstName());
+        updatePersonRequestData.setLastName(updatePersonRequestDto.getLastName());
+        updatePersonRequestData.setHkid(updatePersonRequestDto.getHkid());
+
+        return updatePersonRequestData;
+    }
+
+    public PersonResponseData toPersonResponseData(PersonEntity personEntity) {
+        PersonResponseData personResponseData = new PersonResponseData();
+        personResponseData.setFirstName(personEntity.getFirstName());
+        personResponseData.setLastName(personEntity.getLastName());
+        personResponseData.setHkid(personEntity.getHkid());
+
+        return personResponseData;
+    }
+
 }

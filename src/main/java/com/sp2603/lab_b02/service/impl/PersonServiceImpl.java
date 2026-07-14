@@ -1,21 +1,27 @@
 package com.sp2603.lab_b02.service.impl;
 
 import com.sp2603.lab_b02.data.person.domainObject.request.CreatePersonRequestData;
+import com.sp2603.lab_b02.data.person.domainObject.request.UpdatePersonRequestData;
 import com.sp2603.lab_b02.data.person.domainObject.response.CreatePersonResponseData;
 import com.sp2603.lab_b02.data.person.domainObject.response.GetAllPeopleResponseData;
-import com.sp2603.lab_b02.data.person.dto.request.CreatePersonRequestDto;
+import com.sp2603.lab_b02.data.person.domainObject.response.PersonResponseData;
 import com.sp2603.lab_b02.data.person.entity.PersonEntity;
+import com.sp2603.lab_b02.exception.person.PersonDataMissingException;
+import com.sp2603.lab_b02.exception.person.PersonNotFoundException;
 import com.sp2603.lab_b02.mapper.person.PersonDataMapper;
 import com.sp2603.lab_b02.mapper.person.PersonEntityMapper;
 import com.sp2603.lab_b02.service.PersonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PersonServiceImpl implements PersonService {
+
+    private final Logger log = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     private List<PersonEntity> personEntityList = new ArrayList<>();
     private final PersonEntityMapper personEntityMapper;
@@ -53,5 +59,39 @@ public class PersonServiceImpl implements PersonService {
         List<GetAllPeopleResponseData> getAllPeopleResponseDataList = personDataMapper.toGetAllPeopleResponseDataList(personEntityList);
 
         return getAllPeopleResponseDataList;
+    }
+
+
+    @Override
+    public PersonResponseData updatePerson(UpdatePersonRequestData updatePersonRequestData) {
+        try {
+
+            if (updatePersonRequestData.getHkid() == null) {
+                throw new PersonDataMissingException("hkid");
+            }
+
+            if (updatePersonRequestData.getFirstName() == null) {
+                throw new PersonDataMissingException("firstName");
+            }
+
+            if (updatePersonRequestData.getLastName() == null) {
+                throw new PersonDataMissingException("lastName");
+            }
+
+            for (PersonEntity person : personEntityList) {
+                if (person.getHkid().equals(updatePersonRequestData.getHkid())) {
+                    person.setFirstName(updatePersonRequestData.getFirstName());
+                    person.setLastName(updatePersonRequestData.getLastName());
+
+                    PersonResponseData personResponseData = personDataMapper.toPersonResponseData(person);
+                    return personResponseData;
+                }
+            }
+
+            throw new PersonNotFoundException(updatePersonRequestData.getHkid());
+        } catch(Exception exception) {
+            log.warn("Update Person Failed: {}", exception.getMessage());
+            throw exception;
+        }
     }
 }
