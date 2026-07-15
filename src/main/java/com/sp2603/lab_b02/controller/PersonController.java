@@ -13,11 +13,16 @@ import com.sp2603.lab_b02.data.person.dto.request.CreatePersonRequestDto;
 import com.sp2603.lab_b02.mapper.person.PersonDataMapper;
 import com.sp2603.lab_b02.mapper.person.PersonDtoMapper;
 import com.sp2603.lab_b02.service.PersonService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated
 public class PersonController {
 
     private final PersonService personService;
@@ -32,6 +37,7 @@ public class PersonController {
     }
 
     @PostMapping("/people")
+    @ResponseStatus(HttpStatus.CREATED)
     public CreatePersonResponseDto createPerson(@RequestBody CreatePersonRequestDto createPersonRequestDto) {
         //CreatePersonRequestData createPersonRequestData = new CreatePersonRequestData();
         //createPersonRequestData.setFirstName(createPersonRequestDto.getFirstName());
@@ -64,14 +70,40 @@ public class PersonController {
 
 
     @PutMapping("/people")
-    public PersonResponseDto updatePerson(@RequestBody UpdatePersonRequestDto updatePersonRequestDto) {
-        UpdatePersonRequestData updatePersonRequestData = personDataMapper.toUpdatePersonRequestData(updatePersonRequestDto);
+    public PersonResponseDto updatePerson(@Valid @RequestBody UpdatePersonRequestDto updatePersonRequestDto) {
+        //Lv2
+        //UpdatePersonRequestData updatePersonRequestData = personDataMapper.toUpdatePersonRequestData(updatePersonRequestDto);
+        //PersonResponseData personResponseData = personService.updatePerson(updatePersonRequestData);
+        //PersonResponseDto personResponseDto = personDtoMapper.toPersonResponseDto(personResponseData);
+        //return personResponseDto;
 
-        PersonResponseData personResponseData = personService.updatePerson(updatePersonRequestData);
+        return personDtoMapper.toPersonResponseDto(
+                personService.updatePerson(
+                        personDataMapper.toUpdatePersonRequestData(updatePersonRequestDto)
+                )
+        );
+    }
 
+    @DeleteMapping("/people/{hkid}")
+    public PersonResponseDto deletePerson(@PathVariable @NotBlank String hkid) {
+        /** Lv2
+        PersonResponseData personResponseData = personService.deletePerson(hkid);
         PersonResponseDto personResponseDto = personDtoMapper.toPersonResponseDto(personResponseData);
-
         return personResponseDto;
+         **/
+
+        return personDtoMapper.toPersonResponseDto(
+                personService.deletePerson(hkid)
+        );
+    }
+
+    @GetMapping("/people/{last_name}")
+    public List<PersonResponseDto> getByLastName(@PathVariable(value="last_name") @NotBlank String lastName) {
+        List<PersonResponseData> personResponseDataList = personService.getByLastName(lastName);
+
+        List<PersonResponseDto> personResponseDtoList = personDtoMapper.toPersonResponseDtoList(personResponseDataList);
+
+        return personResponseDtoList;
     }
 
 }

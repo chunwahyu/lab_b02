@@ -6,7 +6,6 @@ import com.sp2603.lab_b02.data.person.domainObject.response.CreatePersonResponse
 import com.sp2603.lab_b02.data.person.domainObject.response.GetAllPeopleResponseData;
 import com.sp2603.lab_b02.data.person.domainObject.response.PersonResponseData;
 import com.sp2603.lab_b02.data.person.entity.PersonEntity;
-import com.sp2603.lab_b02.exception.person.PersonDataMissingException;
 import com.sp2603.lab_b02.exception.person.PersonNotFoundException;
 import com.sp2603.lab_b02.mapper.person.PersonDataMapper;
 import com.sp2603.lab_b02.mapper.person.PersonEntityMapper;
@@ -66,6 +65,7 @@ public class PersonServiceImpl implements PersonService {
     public PersonResponseData updatePerson(UpdatePersonRequestData updatePersonRequestData) {
         try {
 
+            /**
             if (updatePersonRequestData.getHkid() == null) {
                 throw new PersonDataMissingException("hkid");
             }
@@ -77,6 +77,7 @@ public class PersonServiceImpl implements PersonService {
             if (updatePersonRequestData.getLastName() == null) {
                 throw new PersonDataMissingException("lastName");
             }
+            **/
 
             for (PersonEntity person : personEntityList) {
                 if (person.getHkid().equals(updatePersonRequestData.getHkid())) {
@@ -93,5 +94,36 @@ public class PersonServiceImpl implements PersonService {
             log.warn("Update Person Failed: {}", exception.getMessage());
             throw exception;
         }
+    }
+
+    @Override
+    public PersonResponseData deletePerson(String hkid) {
+        try {
+            for (PersonEntity personEntity : personEntityList) {
+                if (personEntity.getHkid().equals(hkid)) {
+                    personEntityList.remove(personEntity);
+                    PersonResponseData personResponseData = personDataMapper.toPersonResponseData(personEntity);
+                    return personResponseData;
+                }
+            }
+            throw new PersonNotFoundException(hkid);
+        } catch (Exception exception) {
+            log.warn("Delete Person Failed: {}", exception.getMessage());
+            throw exception;
+        }
+    }
+
+    @Override
+    public List<PersonResponseData> getByLastName(String lastName) {
+        List<PersonResponseData> resultList = new ArrayList<>();
+
+        for(PersonEntity personEntity: personEntityList) {
+            if(personEntity.getLastName().equals(lastName)) {
+                PersonResponseData personResponseData = personDataMapper.toPersonResponseData(personEntity);
+                resultList.add(personResponseData);
+            }
+        }
+
+        return resultList;
     }
 }

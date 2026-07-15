@@ -55,4 +55,15 @@ public class PersonDtoMapper {
         return personResponseDto;
     }
 
+    public List<PersonResponseDto> toPersonResponseDtoList(List<PersonResponseData> personResponseDataList) {
+        List<PersonResponseDto> personResponseDtoList = new ArrayList<>();
+
+        for(PersonResponseData personResponseData : personResponseDataList) {
+            PersonResponseDto personResponseDto = toPersonResponseDto(personResponseData);
+            personResponseDtoList.add(personResponseDto);
+        }
+
+        return personResponseDtoList;
+    }
+
 }
