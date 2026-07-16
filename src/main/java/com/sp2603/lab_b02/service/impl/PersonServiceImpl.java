@@ -79,6 +79,7 @@ public class PersonServiceImpl implements PersonService {
             }
             **/
 
+            /**
             for (PersonEntity person : personEntityList) {
                 if (person.getHkid().equals(updatePersonRequestData.getHkid())) {
                     person.setFirstName(updatePersonRequestData.getFirstName());
@@ -90,6 +91,14 @@ public class PersonServiceImpl implements PersonService {
             }
 
             throw new PersonNotFoundException(updatePersonRequestData.getHkid());
+             **/
+
+            PersonEntity personEntity = getEntityByHkid(updatePersonRequestData.getHkid());
+            personEntity.setFirstName(updatePersonRequestData.getFirstName());
+            personEntity.setLastName(updatePersonRequestData.getLastName());
+            PersonResponseData personResponseData = personDataMapper.toPersonResponseData(personEntity);
+            return personResponseData;
+
         } catch(Exception exception) {
             log.warn("Update Person Failed: {}", exception.getMessage());
             throw exception;
@@ -99,6 +108,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonResponseData deletePerson(String hkid) {
         try {
+            /**
             for (PersonEntity personEntity : personEntityList) {
                 if (personEntity.getHkid().equals(hkid)) {
                     personEntityList.remove(personEntity);
@@ -107,6 +117,13 @@ public class PersonServiceImpl implements PersonService {
                 }
             }
             throw new PersonNotFoundException(hkid);
+            **/
+            PersonEntity personEntity = getEntityByHkid(hkid);
+            personEntityList.remove(personEntity);
+            PersonResponseData personResponseData = personDataMapper.toPersonResponseData(personEntity);
+
+            return personResponseData;
+
         } catch (Exception exception) {
             log.warn("Delete Person Failed: {}", exception.getMessage());
             throw exception;
@@ -125,5 +142,16 @@ public class PersonServiceImpl implements PersonService {
         }
 
         return resultList;
+    }
+
+    @Override
+    public PersonEntity getEntityByHkid(String hkid) {
+        for(PersonEntity personEntity: personEntityList) {
+            if(personEntity.getHkid().equals(hkid)) {
+                return personEntity;
+            }
+        }
+
+        throw new PersonNotFoundException(hkid);
     }
 }
