@@ -4,9 +4,11 @@ import com.sp2603.lab_b02.data.course.domainObject.request.CreateCourseRequestDa
 import com.sp2603.lab_b02.data.course.domainObject.response.CourseResponseData;
 import com.sp2603.lab_b02.data.course.dto.request.CreateCourseRequestDto;
 import com.sp2603.lab_b02.data.course.entity.CourseEntity;
-import com.sp2603.lab_b02.data.person.domainObject.request.CreatePersonRequestData;
 import com.sp2603.lab_b02.mapper.person.PersonDataMapper;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class CourseDataMapper {
@@ -35,5 +37,14 @@ public class CourseDataMapper {
         courseResponseData.setTeacher(personDataMapper.toPersonResponseData(courseEntity.getTeacher()));
 
         return courseResponseData;
+    }
+
+    public List<CourseResponseData> toCourseResponseDataList(List<CourseEntity> courseEntityList) {
+        List<CourseResponseData> courseResponseDataList = new ArrayList<>();
+        for(CourseEntity courseEntity : courseEntityList) {
+            courseResponseDataList.add(toCourseResponseData(courseEntity));
+        }
+
+        return courseResponseDataList;
     }
 }

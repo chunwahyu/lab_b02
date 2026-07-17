@@ -3,7 +3,6 @@ package com.sp2603.lab_b02.service.impl;
 import com.sp2603.lab_b02.data.course.domainObject.request.CreateCourseRequestData;
 import com.sp2603.lab_b02.data.course.domainObject.response.CourseResponseData;
 import com.sp2603.lab_b02.data.course.entity.CourseEntity;
-import com.sp2603.lab_b02.data.person.entity.PersonEntity;
 import com.sp2603.lab_b02.exception.course.CourseExistedException;
 import com.sp2603.lab_b02.mapper.course.CourseDataMapper;
 import com.sp2603.lab_b02.mapper.course.CourseEntityMapper;
@@ -62,6 +61,15 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    @Override
+    public List<CourseResponseData> getAllCourses() {
+        /** Lv2
+        List<CourseResponseData> courseResponseDataList = courseDataMapper.toCourseResponseDataList(courseEntityList);
+        return courseResponseDataList;
+         **/
+        return courseDataMapper.toCourseResponseDataList(courseEntityList);
+    }
+
     public boolean isCourseExist(String courseId) {
         for(CourseEntity courseEntity: courseEntityList) {
             if(courseEntity.getCourseId().equals(courseId)) {
@@ -70,4 +78,6 @@ public class CourseServiceImpl implements CourseService {
         }
         return false;
     }
+
+
 }

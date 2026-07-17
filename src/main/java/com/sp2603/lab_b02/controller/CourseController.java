@@ -10,6 +10,8 @@ import com.sp2603.lab_b02.service.CourseService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
@@ -37,6 +39,19 @@ public class CourseController {
                 courseService.createCourse(
                         courseDataMapper.toCreateCourseRequestData(createCourseRequestDto)
                 )
+        );
+    }
+
+    @GetMapping
+    public List<CourseResponseDto> getAllCourses() {
+        /** Lv2
+        List<CourseResponseData> courseResponseDataList = courseService.getAllCourses();
+        List<CourseResponseDto> courseResponseDtoList = courseDtoMapper.toCourseResponseDtoList(courseResponseDataList);
+        return courseResponseDtoList;
+         **/
+
+        return courseDtoMapper.toCourseResponseDtoList(
+                courseService.getAllCourses()
         );
     }
 }
