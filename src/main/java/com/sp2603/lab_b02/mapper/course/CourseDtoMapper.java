@@ -24,6 +24,9 @@ public class CourseDtoMapper {
         courseResponseDto.setTeacher(
                 personDtoMapper.toPersonResponseDto(courseResponseData.getTeacher())
         );
+        courseResponseDto.setStudents(
+                personDtoMapper.toPersonResponseDtoList(courseResponseData.getStudents())
+        );
 
         return courseResponseDto;
     }

@@ -89,4 +89,17 @@ public class CourseController {
         );
 
     }
+
+    @PostMapping("/{course_id}/students/{person_hkid}")
+    public CourseResponseDto addStudent(@PathVariable(value = "course_id") String courseId,
+                                        @PathVariable(value = "person_hkid") String personHkid) {
+//        Lv2
+//        CourseResponseData courseResponseData = courseService.addStudent(courseId, personHkid);
+//        CourseResponseDto courseResponseDto = courseDtoMapper.toCourseResponseDto(courseResponseData);
+//        return courseResponseDto;
+
+        return courseDtoMapper.toCourseResponseDto(
+                courseService.addStudent(courseId, personHkid)
+        );
+    }
 }

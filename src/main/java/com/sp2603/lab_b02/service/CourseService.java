@@ -16,4 +16,6 @@ public interface CourseService {
     CourseResponseData updateCourse(UpdateCourseRequestData updateCourseRequestData);
 
     CourseResponseData deleteCourse(String courseId);
+
+    CourseResponseData addStudent(String courseId, String hkid);
 }

@@ -72,4 +72,14 @@ public class PersonDataMapper {
         return personResponseData;
     }
 
+    public List<PersonResponseData> toPersonResponseDataList(List<PersonEntity> personEntityList) {
+        List<PersonResponseData> personResponseDataList = new ArrayList<>();
+
+        for(PersonEntity personEntity : personEntityList) {
+            personResponseDataList.add(toPersonResponseData(personEntity));
+        }
+
+        return personResponseDataList;
+    }
+
 }

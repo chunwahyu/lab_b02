@@ -46,7 +46,10 @@ public class CourseDataMapper {
         courseResponseData.setCourseId(courseEntity.getCourseId());
         courseResponseData.setCourseName(courseEntity.getCourseName());
         courseResponseData.setPrice(courseEntity.getPrice());
-        courseResponseData.setTeacher(personDataMapper.toPersonResponseData(courseEntity.getTeacher()));
+        courseResponseData.setTeacher(
+                personDataMapper.toPersonResponseData(courseEntity.getTeacher())
+        );
+        courseResponseData.setStudents(personDataMapper.toPersonResponseDataList(courseEntity.getStudents()));
 
         return courseResponseData;
     }

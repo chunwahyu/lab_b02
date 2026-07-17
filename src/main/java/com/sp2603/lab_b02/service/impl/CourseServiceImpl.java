@@ -4,8 +4,11 @@ import com.sp2603.lab_b02.data.course.domainObject.request.CreateCourseRequestDa
 import com.sp2603.lab_b02.data.course.domainObject.request.UpdateCourseRequestData;
 import com.sp2603.lab_b02.data.course.domainObject.response.CourseResponseData;
 import com.sp2603.lab_b02.data.course.entity.CourseEntity;
+import com.sp2603.lab_b02.data.person.entity.PersonEntity;
 import com.sp2603.lab_b02.exception.course.CourseExistedException;
 import com.sp2603.lab_b02.exception.course.CourseNotFoundException;
+import com.sp2603.lab_b02.exception.course.StudentDuplicatedException;
+import com.sp2603.lab_b02.exception.course.StudentIsTeacherException;
 import com.sp2603.lab_b02.mapper.course.CourseDataMapper;
 import com.sp2603.lab_b02.mapper.course.CourseEntityMapper;
 import com.sp2603.lab_b02.service.CourseService;
@@ -111,6 +114,48 @@ public class CourseServiceImpl implements CourseService {
             return courseDataMapper.toCourseResponseData(courseEntity);
         } catch(Exception exception) {
             log.warn("Delete Course Failed: {}", exception.getMessage());
+            throw exception;
+        }
+    }
+
+    @Override
+    public CourseResponseData addStudent(String courseId, String hkid) {
+        try {
+//            Lv2
+//            CourseEntity courseEntity = getEntityByCourseId(courseId);
+//            PersonEntity studentEntity = personService.getEntityByHkid(hkid);
+
+//            if(courseEntity.getTeacher().getHkid().equals(hkid)) {
+//                 throw new StudentIsTeacherException(hkid);
+//             }
+//
+//             for(PersonEntity entity : courseEntity.getStudents()) {
+//                if(entity.getHkid().equals(hkid)) {
+//                    throw new StudentDuplicatedException(hkid);
+//                }
+//            }
+//            courseEntity.getStudents().add(studentEntity);
+//            CourseResponseData courseResponseData = courseDataMapper.toCourseResponseData(courseEntity);
+//            return courseResponseData;
+
+            CourseEntity courseEntity = getEntityByCourseId(courseId);
+
+            if(courseEntity.getTeacher().getHkid().equals(hkid)) {
+                throw new StudentIsTeacherException(hkid);
+            }
+
+            for(PersonEntity entity : courseEntity.getStudents()) {
+                if(entity.getHkid().equals(hkid)) {
+                    throw new StudentDuplicatedException(hkid);
+                }
+            }
+
+            courseEntity.getStudents().add(personService.getEntityByHkid(hkid));
+
+            return courseDataMapper.toCourseResponseData(courseEntity);
+
+        } catch(Exception exception) {
+            log.warn("Add student to course Failed: {}", exception.getMessage());
             throw exception;
         }
     }
