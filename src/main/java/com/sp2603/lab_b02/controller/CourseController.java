@@ -10,12 +10,15 @@ import com.sp2603.lab_b02.mapper.course.CourseDataMapper;
 import com.sp2603.lab_b02.mapper.course.CourseDtoMapper;
 import com.sp2603.lab_b02.service.CourseService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/courses")
+@Validated
 public class CourseController {
 
     private final CourseDataMapper courseDataMapper;
@@ -74,4 +77,16 @@ public class CourseController {
         );
     }
 
+    @DeleteMapping("/{course_id}")
+    public CourseResponseDto deleteCourse(@NotBlank @PathVariable(value = "course_id") String courseId) {
+//        Lv2
+//        CourseResponseData courseResponseData = courseService.deleteCourse(courseId);
+//        CourseResponseDto courseResponseDto = courseDtoMapper.toCourseResponseDto(courseResponseData);
+//        return courseResponseDto;
+
+        return courseDtoMapper.toCourseResponseDto(
+                courseService.deleteCourse(courseId)
+        );
+
+    }
 }

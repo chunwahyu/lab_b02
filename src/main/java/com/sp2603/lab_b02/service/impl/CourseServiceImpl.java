@@ -103,6 +103,18 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    @Override
+    public CourseResponseData deleteCourse(String courseId) {
+        try {
+            CourseEntity courseEntity = getEntityByCourseId(courseId);
+            courseEntityList.remove(courseEntity);
+            return courseDataMapper.toCourseResponseData(courseEntity);
+        } catch(Exception exception) {
+            log.warn("Delete Course Failed: {}", exception.getMessage());
+            throw exception;
+        }
+    }
+
     public boolean isCourseExist(String courseId) {
         for(CourseEntity courseEntity: courseEntityList) {
             if(courseEntity.getCourseId().equals(courseId)) {

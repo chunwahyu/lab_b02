@@ -14,4 +14,6 @@ public interface CourseService {
     List<CourseResponseData> getAllCourses();
 
     CourseResponseData updateCourse(UpdateCourseRequestData updateCourseRequestData);
+
+    CourseResponseData deleteCourse(String courseId);
 }
