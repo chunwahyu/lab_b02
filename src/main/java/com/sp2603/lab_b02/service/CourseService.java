@@ -18,4 +18,6 @@ public interface CourseService {
     CourseResponseData deleteCourse(String courseId);
 
     CourseResponseData addStudent(String courseId, String hkid);
+
+    CourseResponseData deleteStudent(String courseId, String hkid);
 }

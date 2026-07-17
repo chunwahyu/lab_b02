@@ -5,10 +5,7 @@ import com.sp2603.lab_b02.data.course.domainObject.request.UpdateCourseRequestDa
 import com.sp2603.lab_b02.data.course.domainObject.response.CourseResponseData;
 import com.sp2603.lab_b02.data.course.entity.CourseEntity;
 import com.sp2603.lab_b02.data.person.entity.PersonEntity;
-import com.sp2603.lab_b02.exception.course.CourseExistedException;
-import com.sp2603.lab_b02.exception.course.CourseNotFoundException;
-import com.sp2603.lab_b02.exception.course.StudentDuplicatedException;
-import com.sp2603.lab_b02.exception.course.StudentIsTeacherException;
+import com.sp2603.lab_b02.exception.course.*;
 import com.sp2603.lab_b02.mapper.course.CourseDataMapper;
 import com.sp2603.lab_b02.mapper.course.CourseEntityMapper;
 import com.sp2603.lab_b02.service.CourseService;
@@ -156,6 +153,27 @@ public class CourseServiceImpl implements CourseService {
 
         } catch(Exception exception) {
             log.warn("Add student to course Failed: {}", exception.getMessage());
+            throw exception;
+        }
+    }
+
+    @Override
+    public CourseResponseData deleteStudent(String courseId, String hkid) {
+        try {
+
+            CourseEntity courseEntity = getEntityByCourseId(courseId);
+
+            for(PersonEntity studentEntity : courseEntity.getStudents()) {
+                if(studentEntity.getHkid().equals(hkid)) {
+                    courseEntity.getStudents().remove(studentEntity);
+                    return courseDataMapper.toCourseResponseData(courseEntity);
+                }
+            }
+
+            throw new StudentNotFoundException(hkid);
+
+        } catch (Exception exception) {
+            log.warn("Delete student Failed: {}", exception.getMessage());
             throw exception;
         }
     }
