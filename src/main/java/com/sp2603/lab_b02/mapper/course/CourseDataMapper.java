@@ -1,8 +1,10 @@
 package com.sp2603.lab_b02.mapper.course;
 
 import com.sp2603.lab_b02.data.course.domainObject.request.CreateCourseRequestData;
+import com.sp2603.lab_b02.data.course.domainObject.request.UpdateCourseRequestData;
 import com.sp2603.lab_b02.data.course.domainObject.response.CourseResponseData;
 import com.sp2603.lab_b02.data.course.dto.request.CreateCourseRequestDto;
+import com.sp2603.lab_b02.data.course.dto.request.UpdateCourseRequestDto;
 import com.sp2603.lab_b02.data.course.entity.CourseEntity;
 import com.sp2603.lab_b02.mapper.person.PersonDataMapper;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,16 @@ public class CourseDataMapper {
        createCourseRequestData.setTeacherHkid(createCourseRequestDto.getTeacherHkid());
 
        return createCourseRequestData;
+    }
+
+    public UpdateCourseRequestData toUpdateCourseRequestData(UpdateCourseRequestDto updateCourseRequestDto) {
+        UpdateCourseRequestData updateCourseRequestData = new UpdateCourseRequestData();
+        updateCourseRequestData.setCourseId(updateCourseRequestDto.getCourseId());
+        updateCourseRequestData.setCourseName(updateCourseRequestDto.getCourseName());
+        updateCourseRequestData.setPrice(updateCourseRequestDto.getPrice());
+        updateCourseRequestData.setTeacherHkid(updateCourseRequestDto.getTeacherHkid());
+
+        return updateCourseRequestData;
     }
 
     public CourseResponseData toCourseResponseData(CourseEntity courseEntity) {

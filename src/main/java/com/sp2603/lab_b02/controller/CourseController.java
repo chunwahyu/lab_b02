@@ -1,8 +1,10 @@
 package com.sp2603.lab_b02.controller;
 
 import com.sp2603.lab_b02.data.course.domainObject.request.CreateCourseRequestData;
+import com.sp2603.lab_b02.data.course.domainObject.request.UpdateCourseRequestData;
 import com.sp2603.lab_b02.data.course.domainObject.response.CourseResponseData;
 import com.sp2603.lab_b02.data.course.dto.request.CreateCourseRequestDto;
+import com.sp2603.lab_b02.data.course.dto.request.UpdateCourseRequestDto;
 import com.sp2603.lab_b02.data.course.dto.response.CourseResponseDto;
 import com.sp2603.lab_b02.mapper.course.CourseDataMapper;
 import com.sp2603.lab_b02.mapper.course.CourseDtoMapper;
@@ -54,4 +56,22 @@ public class CourseController {
                 courseService.getAllCourses()
         );
     }
+
+    @PutMapping
+    public CourseResponseDto updateCourse(@Valid @RequestBody UpdateCourseRequestDto updateCourseRequestDto) {
+
+//        Lv2
+//        UpdateCourseRequestData updateCourseRequestData = courseDataMapper.toUpdateCourseRequestData(updateCourseRequestDto);
+//        CourseResponseData courseResponseData = courseService.updateCourse(updateCourseRequestData);
+//        CourseResponseDto courseResponseDto = courseDtoMapper.toCourseResponseDto(courseResponseData);
+//
+//        return courseResponseDto;
+
+        return courseDtoMapper.toCourseResponseDto(
+                courseService.updateCourse(
+                        courseDataMapper.toUpdateCourseRequestData(updateCourseRequestDto)
+                )
+        );
+    }
+
 }

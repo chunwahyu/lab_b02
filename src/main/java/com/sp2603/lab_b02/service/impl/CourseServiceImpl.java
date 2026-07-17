@@ -1,9 +1,11 @@
 package com.sp2603.lab_b02.service.impl;
 
 import com.sp2603.lab_b02.data.course.domainObject.request.CreateCourseRequestData;
+import com.sp2603.lab_b02.data.course.domainObject.request.UpdateCourseRequestData;
 import com.sp2603.lab_b02.data.course.domainObject.response.CourseResponseData;
 import com.sp2603.lab_b02.data.course.entity.CourseEntity;
 import com.sp2603.lab_b02.exception.course.CourseExistedException;
+import com.sp2603.lab_b02.exception.course.CourseNotFoundException;
 import com.sp2603.lab_b02.mapper.course.CourseDataMapper;
 import com.sp2603.lab_b02.mapper.course.CourseEntityMapper;
 import com.sp2603.lab_b02.service.CourseService;
@@ -70,6 +72,37 @@ public class CourseServiceImpl implements CourseService {
         return courseDataMapper.toCourseResponseDataList(courseEntityList);
     }
 
+    @Override
+    public CourseResponseData updateCourse(UpdateCourseRequestData updateCourseRequestData) {
+        try {
+            //Lv2
+            //CourseEntity courseEntity = getEntityByCourseId(updateCourseRequestData.getCourseId());
+            //PersonEntity teacherEntity = personService.getEntityByHkid(updateCourseRequestData.getTeacherHkid());
+
+            //courseEntity.setCourseName(updateCourseRequestData.getCourseName());
+            //courseEntity.setPrice(updateCourseRequestData.getPrice());
+            //courseEntity.setTeacher(teacherEntity);
+
+            //CourseResponseData courseResponseData = courseDataMapper.toCourseResponseData(courseEntity);
+            //return courseResponseData;
+
+            //Lv3
+            CourseEntity courseEntity = getEntityByCourseId(updateCourseRequestData.getCourseId());
+
+            courseEntity.setCourseName(updateCourseRequestData.getCourseName());
+            courseEntity.setPrice(updateCourseRequestData.getPrice());
+            courseEntity.setTeacher(
+                    personService.getEntityByHkid(updateCourseRequestData.getTeacherHkid())
+                    );
+
+            return courseDataMapper.toCourseResponseData(courseEntity);
+
+        } catch (Exception exception) {
+            log.warn("Update Course Failed: {}", exception.getMessage());
+            throw exception;
+        }
+    }
+
     public boolean isCourseExist(String courseId) {
         for(CourseEntity courseEntity: courseEntityList) {
             if(courseEntity.getCourseId().equals(courseId)) {
@@ -79,5 +112,12 @@ public class CourseServiceImpl implements CourseService {
         return false;
     }
 
-
+    public CourseEntity getEntityByCourseId(String courseId) {
+        for(CourseEntity courseEntity:courseEntityList) {
+            if(courseEntity.getCourseId().equals(courseId)) {
+                return courseEntity;
+            }
+        }
+        throw new CourseNotFoundException(courseId);
+    }
 }
